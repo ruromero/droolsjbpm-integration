@@ -2,11 +2,38 @@ spec:
   replicas: 1
   template:
     spec:
+      volumes:
+        - name: config
+          configMap:
+            name: ${project.artifactId}
+            items:
+              - key: openshift-config.yml
+                path: openshift-config.yml
       containers:
-        - resources:
+        - env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: process-instance-migration
+                  key: mysql_user
+            - name: MYSQL_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: process-instance-migration
+                  key: mysql_pwd
+            - name: CREDENTIALS_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: process-instance-migration
+                  key: credentials_pwd
+          volumeMounts:
+            - name: config
+              mountPath: /etc/process-migration
+          resources:
             requests:
               cpu: '200m'
               memory: '400Mi'
             limits:
               cpu: '400m'
               memory: '800Mi'
+              
