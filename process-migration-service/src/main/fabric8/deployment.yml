@@ -26,6 +26,8 @@ spec:
                 secretKeyRef:
                   name: process-instance-migration
                   key: credentials_pwd
+            - name: JAVA_ARGS
+              value: -s/etc/process-migration/openshift-config.yml
           volumeMounts:
             - name: config
               mountPath: /etc/process-migration
@@ -36,4 +38,3 @@ spec:
             limits:
               cpu: '400m'
               memory: '800Mi'
-              

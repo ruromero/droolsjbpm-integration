@@ -104,7 +104,7 @@
             <groupId>io.thorntail</groupId>
             <artifactId>microprofile-config</artifactId>
             <exclusions>
-                <!-- https://groups.google.com/forum/#!topic/thorntail/LVzz6UdU3ZE 
+                <!-- https://groups.google.com/forum/#!topic/thorntail/LVzz6UdU3ZE
                     java.lang.ClassCastException: java.lang.Boolean cannot be cast to java.lang.String -->
                 <exclusion>
                     <groupId>org.wildfly.swarm</groupId>
@@ -217,24 +217,6 @@
                                     </fmp-service>
                                 </config>
                             </enricher>
-                            <images>
-                                <image>
-                                    <name>${project.artifactId}:${project.version}</name>
-                                    <build>
-                                        <from>fabric8/s2i-java:2.3</from>
-                                        <ports>
-                                            <port>8080</port>
-                                            <port>8443</port>
-                                        </ports>
-                                        <entryPoint>
-                                            <arg>java</arg>
-                                            <arg>-jar</arg>
-                                            <arg>/deployments/process-migration-thorntail.jar</arg>
-                                            <arg>-s/etc/process-migration/openshift-config.yml</arg>
-                                        </entryPoint>
-                                    </build>
-                                </image>
-                            </images>
                         </configuration>
                         <executions>
                             <execution>
