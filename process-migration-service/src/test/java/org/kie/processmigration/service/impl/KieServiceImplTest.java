@@ -16,7 +16,6 @@
 
 package org.kie.processmigration.service.impl;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
@@ -50,8 +49,7 @@ public class KieServiceImplTest extends KieServiceImpl {
     private static CountDownLatch countDownLatch;
 
     public KieServiceImplTest() {
-        URL projectConfig = getClass().getClassLoader().getResource("project-test.yml");
-        System.setProperty(SwarmProperties.PROJECT_STAGE_FILE, projectConfig.toExternalForm());
+        System.setProperty(SwarmProperties.PROJECT_STAGE, "test");
         Swarm swarm = null;
         try {
             swarm = new Swarm(new Properties());
