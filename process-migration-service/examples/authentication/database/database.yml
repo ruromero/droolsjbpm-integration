@@ -1,16 +1,28 @@
 thorntail:
   deployment:
     process-migration.war:
-      jaxrs:
-        application-path: /rest
       web:
         login-config:
           auth-method: BASIC
           security-domain: pim
         security-constraints:
           - url-pattern: /*
-            roles: [ admin ]
-          - url-pattern: /health/*
+            methods: [GET]
+            roles: [admin, user]
+  security:
+    security-domains:
+      pim:
+        classic-authentication:
+          login-modules:
+            Database:
+              code: Database
+              flag: required
+              module-options:
+                dsJndiName: java:jboss/datasources/pimDS
+                principalsQuery: SELECT password FROM User WHERE name=?
+                rolesQuery: SELECT role, 'Roles' FROM User WHERE name=?
+                hashAlgorithm: MD5
+                hashEncoding: base64
   datasources:
     data-sources:
       pimDS:
@@ -25,14 +37,3 @@ thorntail:
         timers-store:
           datasource-jndi-name: java:jboss/datasources/pimDS
           partition: timer
-  security:
-    security-domains:
-      pim:
-        classic-authentication:
-          login-modules:
-            UsersRoles:
-              code: UsersRoles
-              flag: required
-              module-options:
-                usersProperties: application-users.properties
-                rolesProperties: application-roles.properties

@@ -66,7 +66,7 @@ thorntail:
   deployment:
     process-migration.war:
       jaxrs:                   (1)
-        application-path: /
+        application-path: /rest
       web:                     (2)
         login-config:
           auth-method: BASIC
@@ -110,7 +110,17 @@ thorntail:
 
 ## Configuration overrides
 
-It is possible to override or extend the provided configuration.
+It is possible to override or extend the provided configuration. You can provide one or more additional configuration files that will allow you to customize the application. Several examples are provided in the [examples](./examples/) folder.
+
+As an example, if you want to replace the H2 default persistence configuration by [MariaDB](./examples/persistence/mariadb.yml) and the authentication mechanism to use [LDAP](./examples/authentication/ldap/ldapExtended.yml) you could use the following command to start the application:
+
+```bash
+java -Dthorntail.classpath=./mariadb-java-client-2.4.2.jar -jar target/process-migration-thorntail.jar -s./examples/authentication/ldap/ldapExtended.yml -s./examples/persistence/mariadb.yml
+```
+
+**Note:** As the MariaDB jdbc driver is not included in the classpath it must be added.
+
+**Note:** These files will override or extend the already defined properties in the project-defaults.yml file
 
 ### Defining KIE Servers
 
