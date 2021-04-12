@@ -17,6 +17,7 @@
 package org.kie.processmigration.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.AttributeOverride;
@@ -38,21 +39,19 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "plans")
 @SequenceGenerator(name = "planIdSeq", sequenceName = "PLAN_ID_SEQ")
-@NamedQueries({
-    @NamedQuery(name = "Plan.findAll", query = "SELECT p FROM Plan p"),
-    @NamedQuery(name = "Plan.findById", query = "SELECT p FROM Plan p WHERE p.id = :id")
-})
-public class Plan implements Serializable {
-
-    private static final long serialVersionUID = 1244535648642365858L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "planIdSeq")
-    private long id;
+@EqualsAndHashCode(callSuper = false)
+@ToString
+@Accessors(chain = true)
+@Getter
+@Setter
+public class Plan extends PanacheEntity {
 
     private String name;
 
@@ -80,62 +79,14 @@ public class Plan implements Serializable {
         name = "plan_mappings",
         joinColumns = @JoinColumn(name = "plan_id")
     )
-    private Map<String, String> mappings;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ProcessRef getSource() {
-        return source;
-    }
-
-    public void setSource(ProcessRef source) {
-        this.source = source;
-    }
-
-    public ProcessRef getTarget() {
-        return target;
-    }
-
-    public void setTarget(ProcessRef target) {
-        this.target = target;
-    }
-
-    public Map<String, String> getMappings() {
-        return mappings;
-    }
-
-    public void setMappings(Map<String, String> mappings) {
-        this.mappings = mappings;
-    }
+    private Map<String, String> mappings = new HashMap<>();
 
     public Plan copy(Plan plan) {
-        this.name = plan.getName();
-        this.description = plan.getDescription();
-        this.source = plan.getSource();
-        this.target = plan.getTarget();
-        this.mappings = plan.getMappings();
+        this.name = plan.name;
+        this.description = plan.description;
+        this.source = plan.source;
+        this.target = plan.target;
+        this.mappings = plan.mappings;
         return this;
     }
 }

@@ -16,6 +16,12 @@
 
 package org.kie.processmigration.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +34,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 
 @Embeddable
+@EqualsAndHashCode
+@ToString
+@Accessors(chain = true)
+@Getter
+@Setter
 public class MigrationDefinition {
 
     @Column(name = "plan_id")
@@ -47,47 +58,4 @@ public class MigrationDefinition {
     @Embedded
     private Execution execution;
 
-    public Long getPlanId() {
-        return planId;
-    }
-
-    public void setPlanId(Long planId) {
-        this.planId = planId;
-    }
-
-    public List<Long> getProcessInstanceIds() {
-        return processInstanceIds;
-    }
-
-    public void setProcessInstanceIds(List<Long> processInstanceIds) {
-        if (processInstanceIds != null) {
-            this.processInstanceIds = new ArrayList<>(processInstanceIds);
-        } else {
-            this.processInstanceIds = null;
-        }
-    }
-
-    public String getKieServerId() {
-        return kieServerId;
-    }
-
-    public void setKieServerId(String kieServerId) {
-        this.kieServerId = kieServerId;
-    }
-
-    public String getRequester() {
-        return requester;
-    }
-
-    public void setRequester(String requester) {
-        this.requester = requester;
-    }
-
-    public Execution getExecution() {
-        return execution;
-    }
-
-    public void setExecution(Execution execution) {
-        this.execution = execution;
-    }
 }
